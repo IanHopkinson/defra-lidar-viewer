@@ -29,6 +29,9 @@ LOGLINE_TEMPLATE = OrderedDict([
 
 from os import listdir
 import os.path
+import sys 
+print(sys.version_info)
+import numpy as np
 
 def main():
     datafiles = listdir(DATA_DIR)
@@ -65,6 +68,23 @@ def main():
                     print("Unexpected line length (not 2 or 500): {}".format(len(parts)))
 
             print(log_line)
+
+    # Select a file and then load it into an array
+    data = np.zeros((500,500), dtype=np.float)
+    with open(os.path.join(DATA_DIR, datafiles[0])) as f:
+        content = f.readlines()
+        idx = 0
+        for line in content:
+            parts = line.split()
+            if len(parts) == 500:
+                data[idx,] = [float(x) for x in parts]
+                idx = idx + 1 
+    print(data)
+
+    # Show the data
+    from matplotlib import pyplot as plt
+    plt.imshow(data, interpolation='nearest', cmap=plt.gray())
+    plt.show()
 
 if __name__ == "__main__":
     main()
