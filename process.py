@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-DATA_DIR ="C:\\BigData\\defra-lidar\\LIDAR-DTM-2M-SJ46"
+DATA_DIR ="C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-SJ46"
     
 # Subdirectory
 # LIDAR-DTM-2M-SJ46
@@ -29,49 +29,30 @@ LOGLINE_TEMPLATE = OrderedDict([
 
 from os import listdir
 import os.path
-import sys 
-print(sys.version_info)
+
 import numpy as np
+
+from matplotlib import pyplot as plt
+
 
 def main():
     datafiles = listdir(DATA_DIR)
     print("Found {} datafiles".format(len(datafiles)))
 
-    for item in datafiles:
+#    for item in datafiles:
         # Open file
-        with open(os.path.join(DATA_DIR, item)) as f:
-            content = f.readlines()
-            print("{} has {} lines".format(item, len(content)))
-            log_line = LOGLINE_TEMPLATE.copy()
-            log_line["name"] = item
-            for line in content:
-                parts = line.split()
-                #assert len(parts) in [1,2]
-                if len(parts) == 500:
-                    break
-                elif len(parts) == 2:
-                    if parts[0] == "nrows":
-                        log_line["nrows"] = int(parts[1])
-                    elif parts[0] == "ncols":
-                        log_line["ncols"] = int(parts[1])
-                    elif parts[0] == "xllcorner":
-                        log_line["xllcorner"] = int(parts[1])
-                    elif parts[0] == "yllcorner":
-                        log_line["yllcorner"] = int(parts[1])
-                    elif parts[0] == "cellsize":
-                        log_line["cellsize"] = int(parts[1])
-                    elif parts[0] == "NODATA_value":
-                        log_line["NODATA_value"] = int(parts[1])
-                    else:
-                        print("Keyword not recognised: {}".format(parts[0]))
-                else: 
-                    print("Unexpected line length (not 2 or 500): {}".format(len(parts)))
+        
 
-            print(log_line)
+            #print(log_line)
 
     # Select a file and then load it into an array
+    currentfile = datafiles[0]
+
+    metadata = get_header_info(currentfile)
+    print(metadata)
+
     data = np.zeros((500,500), dtype=np.float)
-    with open(os.path.join(DATA_DIR, datafiles[0])) as f:
+    with open(os.path.join(DATA_DIR, currentfile)) as f:
         content = f.readlines()
         idx = 0
         for line in content:
@@ -81,10 +62,44 @@ def main():
                 idx = idx + 1 
     print(data)
 
+    print("Number of NODATA_values: {}".format(np.sum(data == -9999)))
+    data[data == -9999] = np.nan
+    print("Minimum value found: {}".format(np.nanmin(data)))
+    print("Maximum value found: {}".format(np.nanmax(data)))
     # Show the data
-    from matplotlib import pyplot as plt
+    
     plt.imshow(data, interpolation='nearest', cmap=plt.gray())
     plt.show()
+
+def get_header_info(filename):
+    log_line = LOGLINE_TEMPLATE.copy()
+    with open(os.path.join(DATA_DIR, filename)) as f:
+        content = [next(f) for x in range(7)]
+        log_line["name"] = filename
+        for line in content:
+            parts = line.split()
+            #assert len(parts) in [1,2]
+            if len(parts) == 500:
+                break
+            elif len(parts) == 2:
+                if parts[0] == "nrows":
+                    log_line["nrows"] = int(parts[1])
+                elif parts[0] == "ncols":
+                    log_line["ncols"] = int(parts[1])
+                elif parts[0] == "xllcorner":
+                    log_line["xllcorner"] = int(parts[1])
+                elif parts[0] == "yllcorner":
+                    log_line["yllcorner"] = int(parts[1])
+                elif parts[0] == "cellsize":
+                    log_line["cellsize"] = int(parts[1])
+                elif parts[0] == "NODATA_value":
+                    log_line["NODATA_value"] = int(parts[1])
+                else:
+                    print("Keyword not recognised: {}".format(parts[0]))
+            else: 
+                print("Unexpected line length (not 2 or 500): {}".format(len(parts)))
+    return log_line
+
 
 if __name__ == "__main__":
     main()
