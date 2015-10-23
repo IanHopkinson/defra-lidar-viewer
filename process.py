@@ -35,6 +35,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib
 
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+
 
 def main():
     datafiles = listdir(DATA_DIR)
@@ -60,7 +63,29 @@ def main():
     print("Minimum value found: {}".format(np.nanmin(data)))
     print("Maximum value found: {}".format(np.nanmax(data)))
     # Show the data
+    # plot_image(data)
+    plot_surface(data)
+
+def plot_image(data):
     plt.imshow(data, interpolation='nearest', cmap=plt.gray())
+    plt.show()
+
+def plot_surface(data):
+    # generate 3D sample data
+
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    X = np.arange(0,500)
+    Y = np.arange(0,500)
+    X, Y = np.meshgrid(X, Y)
+    surf = ax.plot_surface(X, Y, data, linewidth=0, antialiased=False)
+    # ax.set_zlim(-1.01, 1.01)
+
+    # ax.zaxis.set_major_locator(LinearLocator(10))
+    # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+    # fig.colorbar(surf, shrink=0.5, aspect=5)
+
     plt.show()
 
 
