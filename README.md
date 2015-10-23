@@ -2,7 +2,8 @@
 
 ## Data
 
-Terrain data is 
+Terrain data is an estimation of underlying terrain, surface data is the actual
+measurement including buildings, vehicles and vegetation.
 
 The data lives here: 
 

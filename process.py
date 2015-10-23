@@ -33,6 +33,7 @@ import os.path
 import numpy as np
 
 from matplotlib import pyplot as plt
+import matplotlib
 
 
 def main():
@@ -46,13 +47,26 @@ def main():
             #print(log_line)
 
     # Select a file and then load it into an array
-    currentfile = datafiles[0]
+    # 8 - includes home!
+    currentfile = datafiles[7]
 
     metadata = get_header_info(currentfile)
     print(metadata)
 
+    data = get_image(currentfile)
+
+    print("Number of NODATA_values: {}".format(np.sum(data == -9999)))
+    data[data == -9999] = np.nan
+    print("Minimum value found: {}".format(np.nanmin(data)))
+    print("Maximum value found: {}".format(np.nanmax(data)))
+    # Show the data
+    plt.imshow(data, interpolation='nearest', cmap=plt.gray())
+    plt.show()
+
+
+def get_image(filename):
     data = np.zeros((500,500), dtype=np.float)
-    with open(os.path.join(DATA_DIR, currentfile)) as f:
+    with open(os.path.join(DATA_DIR, filename)) as f:
         content = f.readlines()
         idx = 0
         for line in content:
@@ -60,16 +74,7 @@ def main():
             if len(parts) == 500:
                 data[idx,] = [float(x) for x in parts]
                 idx = idx + 1 
-    print(data)
-
-    print("Number of NODATA_values: {}".format(np.sum(data == -9999)))
-    data[data == -9999] = np.nan
-    print("Minimum value found: {}".format(np.nanmin(data)))
-    print("Maximum value found: {}".format(np.nanmax(data)))
-    # Show the data
-    
-    plt.imshow(data, interpolation='nearest', cmap=plt.gray())
-    plt.show()
+    return data
 
 def get_header_info(filename):
     log_line = LOGLINE_TEMPLATE.copy()
