@@ -23,6 +23,14 @@ some locations have NODATA, these appear white in the image.
 
 This assumes you have `numpy` and `matplotlib` libraries installed.
 
+## TODO
+
+We could make an image overlay using leafet.js:
+
+http://leafletjs.com/reference.html#imageoverlay 
+
+https://www.mapbox.com/mapbox.js/example/v1.0.0/imageoverlay-georeferenced/
+
 ## Data
 
 Terrain data is an estimation of underlying terrain, surface data is the actual
@@ -41,6 +49,8 @@ http://www.geostore.com/environment-agency/rest/product/OS_GB_10KM/SJ46
 The `id` in the JSON tells you where you can download the zip file, e.g.:
 
 http://www.geostore.com/environment-agency/rest/product/download/6129
+
+## References
 
 Handy collect of links
 
