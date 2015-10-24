@@ -37,26 +37,19 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
 
-DATA_DIR ="C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-NY22"
+DATA_DIR = "C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-SJ46"
+
+DATA_DICT = {
+            "SJ36": {"name":"Deeside", "xorg":330000, "yorg":360000},
+            "SJ46": {"name":"Chester", "xorg":340000, "yorg":360000},
+            "SO74": {"name":"Malvern", "xorg":370000, "yorg":240000},
+            "NY22": {"name":"Keswick", "xorg":320000, "yorg":520000},
+            }
+
 def main():
-    # SJ36 - Deeside
-    # xorg = 330000
-    # yorg = 360000
-
-    # SJ46 - Chester
-    # xorg = 330000
-    # yorg = 360000
-
-    # SO74 - Malvern
-    # xorg = 370000
-    # yorg = 240000
-
-    # NY22 - Keswick
-    xorg = 320000
-    yorg = 520000
-
     datafiles = listdir(DATA_DIR)
     print("Found {} datafiles".format(len(datafiles)))
+    xorg, yorg = tile_origin(DATA_DIR)
 
     # Select a file and then load it into an array
     # 8 - includes home!
@@ -89,6 +82,13 @@ def main():
     # Show the data
     plot_image(bigdata)
     #plot_surface(data)
+
+def tile_origin(datadir):
+    tile_code = datadir.split("-")[-1]
+    if tile_code in DATA_DICT.keys():
+        xorg = DATA_DICT[tile_code]["xorg"]
+        yorg = DATA_DICT[tile_code]["yorg"]
+    return xorg, yorg
 
 def calculate_offsets(metadata, xorg=340000, yorg=360000):
     xoffset = (metadata["xllcorner"] - xorg) / 2
