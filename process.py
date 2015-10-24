@@ -36,11 +36,9 @@ import matplotlib
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
-
-
-
 DATA_DICT = {
             "NY22": {"name":"Keswick", "xorg":320000, "yorg":520000},
+            "NZ26": {"name":"Newscastle", "xorg":420000, "yorg":560000},
             "SJ36": {"name":"Deeside", "xorg":330000, "yorg":360000},
             "SJ46": {"name":"Chester", "xorg":340000, "yorg":360000},
             "SJ89": {"name":"Manchester", "xorg":380000, "yorg":390000},

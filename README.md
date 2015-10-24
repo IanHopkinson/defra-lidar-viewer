@@ -2,7 +2,7 @@
 
 ## Usage
 
-The `process.py` will display a window showing the data from a LIDAR map tile.
+`process.py` will display a window showing the data from a LIDAR map tile.
 
 These data must be downloaded manually from:
 
@@ -11,9 +11,7 @@ http://environment.data.gov.uk/ds/survey#/download
 And then unzipped to a directory. So far I've successfully used the 2m resolution
 Terrain and Surface files.
 
-Once downloaded and unzipped, change `DATA_DIR` to the appropriate location and
-set `xorg` and `yorg` in the `DATA_DICT` to the `xllcorner` and `yllcorner` values
-of the lower left corner of the first file in your tile. (I'm looking to automating this)
+Once downloaded and unzipped, change `DATA_DIR` to the appropriate location.
 
 Then just run `./process.py`, and after a shortish pause (<1 minute) you should see a greyscale
 image of your map tile with height encoded as shade (black = lowest, white = highest).
@@ -23,11 +21,9 @@ some locations have NODATA, these appear white in the image.
 
 This assumes you have `numpy` and `matplotlib` libraries installed.
 
+There are minimal tests which can be run by doing `nosetests`, assuming you have `nosetests` installed
+
 ## TODO
-
-Get xorg and yorg automatically from data directory:
-
-http://digimap.edina.ac.uk/webhelp/os/gazetteer_plus/grid_ref_conversion.htm
 
 We could make an image overlay using leafet.js:
 
@@ -67,3 +63,7 @@ http://gridreferencefinder.com/
 See here for converting OS x,y to lat,lng
 
 https://bitbucket.org/ian_hopkinson/rail-statistics
+
+Get tile origin from OS National Grid reference:
+
+http://digimap.edina.ac.uk/webhelp/os/gazetteer_plus/grid_ref_conversion.htm
