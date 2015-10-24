@@ -34,6 +34,14 @@ http://environment.data.gov.uk/ds/survey#/download
 
 http://environment.data.gov.uk/ds/survey#/download?grid=SJ36
 
+There's JSON metadata for each grid:
+
+http://www.geostore.com/environment-agency/rest/product/OS_GB_10KM/SJ46
+
+The `id` in the JSON tells you where you can download the zip file, e.g.:
+
+http://www.geostore.com/environment-agency/rest/product/download/6129
+
 Handy collect of links
 
 http://mapgubbins.tumblr.com/post/131424021480/open-data-release-of-aerial-lidar-data-for
