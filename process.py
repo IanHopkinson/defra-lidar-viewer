@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-DATA_DIR ="C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-SJ46"
-    
 # Subdirectory
 # LIDAR-DTM-2M-SJ46
 # Filenames like: 
@@ -39,7 +37,11 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
 
+DATA_DIR ="C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-SJ36"
 def main():
+    xorg = 330000
+    yorg = 360000
+
     datafiles = listdir(DATA_DIR)
     print("Found {} datafiles".format(len(datafiles)))
 
@@ -57,7 +59,7 @@ def main():
     #print("Maximum value found: {}".format(np.nanmax(data)))
 
     # filelist = [7, 8, 17, 18]
-    filelist = [x for x in range(97)]
+    filelist = [x for x in range(len(datafiles))]
 
     bigdata = np.zeros((5000,5000), dtype=np.float)
     for idx in filelist:
@@ -66,7 +68,7 @@ def main():
         data = get_image(datafiles[idx])        
         data[data == -9999] = np.nan
         # Calculate x,y offset
-        xoffset, yoffset = calculate_offsets(metadata)
+        xoffset, yoffset = calculate_offsets(metadata, xorg, yorg)
         width = 500
         height = 500
         # Write into array
@@ -75,10 +77,7 @@ def main():
     plot_image(bigdata)
     #plot_surface(data)
 
-def calculate_offsets(metadata):
-    xorg = 340000
-    yorg = 360000
-
+def calculate_offsets(metadata, xorg=340000, yorg=360000):
     xoffset = (metadata["xllcorner"] - xorg) / 2
     yoffset = 5000 - (metadata["yllcorner"] - yorg) / 2
     return xoffset, yoffset
