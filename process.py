@@ -37,10 +37,23 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
 
-DATA_DIR ="C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-SJ36"
+DATA_DIR ="C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-NY22"
 def main():
-    xorg = 330000
-    yorg = 360000
+    # SJ36 - Deeside
+    # xorg = 330000
+    # yorg = 360000
+
+    # SJ46 - Chester
+    # xorg = 330000
+    # yorg = 360000
+
+    # SO74 - Malvern
+    # xorg = 370000
+    # yorg = 240000
+
+    # NY22 - Keswick
+    xorg = 320000
+    yorg = 520000
 
     datafiles = listdir(DATA_DIR)
     print("Found {} datafiles".format(len(datafiles)))
