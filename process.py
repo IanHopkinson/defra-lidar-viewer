@@ -52,44 +52,44 @@ DATA_DICT = {
 # Primary grid: (S, T), (N, O), H going North 500km x 500km
 # Secondary grid: A-Z (omitting I, 5x5) 100km x 100km
 PRIMARY = {
-        "H": {"xorg": 0, "yorg":1500000},
-        "N": {"xorg": 0, "yorg":1000000},
-        "O": {"xorg": 500000, "yorg":1000000},
-        "S": {"xorg": 0, "yorg": 500000},
-        "T": {"xorg": 500000, "yorg": 500000},
+        "H": {"xorg": 0, "yorg":1400000},
+        "N": {"xorg": 0, "yorg":900000},
+        "O": {"xorg": 500000, "yorg":900000},
+        "S": {"xorg": 0, "yorg": 400000},
+        "T": {"xorg": 500000, "yorg": 400000},
 
 }
 
 SECONDARY = {
-        "A": {"xorg": 0, "yorg": 10000},
-        "B": {"xorg": 10000, "yorg": 10000},
-        "C": {"xorg": 20000, "yorg": 10000},
-        "D": {"xorg": 30000, "yorg": 10000},
-        "E": {"xorg": 40000, "yorg": 10000},
+        "A": {"xorg": 0, "yorg": 0},
+        "B": {"xorg": 100000, "yorg": 0},
+        "C": {"xorg": 200000, "yorg": 0},
+        "D": {"xorg": 300000, "yorg": 0},
+        "E": {"xorg": 400000, "yorg": 0},
 
-        "F": {"xorg": 0, "yorg": 20000},
-        "G": {"xorg": 10000, "yorg": 20000},
-        "H": {"xorg": 20000, "yorg": 20000},
-        "J": {"xorg": 30000, "yorg": 20000},
-        "K": {"xorg": 40000, "yorg": 20000},
+        "F": {"xorg": 0, "yorg": 100000},
+        "G": {"xorg": 100000, "yorg": 100000},
+        "H": {"xorg": 200000, "yorg": 100000},
+        "J": {"xorg": 300000, "yorg": 100000},
+        "K": {"xorg": 400000, "yorg": 100000},
 
-        "L": {"xorg": 0, "yorg": 30000},
-        "M": {"xorg": 10000, "yorg": 30000},
-        "N": {"xorg": 20000, "yorg": 30000},
-        "O": {"xorg": 30000, "yorg": 30000},
-        "P": {"xorg": 40000, "yorg": 30000},
+        "L": {"xorg": 0, "yorg": 200000},
+        "M": {"xorg": 100000, "yorg": 200000},
+        "N": {"xorg": 200000, "yorg": 200000},
+        "O": {"xorg": 300000, "yorg": 200000},
+        "P": {"xorg": 400000, "yorg": 200000},
 
-        "Q": {"xorg": 0, "yorg": 40000},
-        "R": {"xorg": 10000, "yorg":40000},
-        "S": {"xorg": 20000, "yorg":40000},
-        "T": {"xorg": 30000, "yorg":40000},
-        "U": {"xorg": 40000, "yorg":40000},
+        "Q": {"xorg": 0, "yorg": 300000},
+        "R": {"xorg": 100000, "yorg":300000},
+        "S": {"xorg": 200000, "yorg":300000},
+        "T": {"xorg": 300000, "yorg":300000},
+        "U": {"xorg": 400000, "yorg":300000},
 
-        "V": {"xorg": 0, "yorg": 50000},
-        "W": {"xorg": 10000, "yorg": 50000},
-        "X": {"xorg": 20000, "yorg": 50000},
-        "Y": {"xorg": 30000, "yorg": 50000},
-        "Z": {"xorg": 40000, "yorg": 50000},        
+        "V": {"xorg": 0, "yorg": 400000},
+        "W": {"xorg": 100000, "yorg": 400000},
+        "X": {"xorg": 200000, "yorg": 400000},
+        "Y": {"xorg": 300000, "yorg": 400000},
+        "Z": {"xorg": 400000, "yorg": 400000},        
 }
 
 DATA_DIR = "C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-ST76"
@@ -97,7 +97,7 @@ DATA_DIR = "C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-ST76"
 def main():
     datafiles = listdir(DATA_DIR)
     print("Found {} datafiles".format(len(datafiles)))
-    xorg, yorg = tile_origin(DATA_DIR)
+    xorg, yorg = tile_origin(DATA_DIR.split("-")[-1])
 
     # Select a file and then load it into an array
     # 8 - includes home!
@@ -131,13 +131,12 @@ def main():
     plot_image(bigdata)
     #plot_surface(data)
 
-def tile_origin(datadir):
-    tile_code = datadir.split("-")[-1]
-    
-
-    if tile_code in DATA_DICT.keys():
-        xorg = DATA_DICT[tile_code]["xorg"]
-        yorg = DATA_DICT[tile_code]["yorg"]
+def tile_origin(tile_code):
+    xorg = PRIMARY[tile_code[0]]["xorg"] + SECONDARY[tile_code[1]]["xorg"] + int(tile_code[2]) * 10000
+    yorg = PRIMARY[tile_code[0]]["yorg"] - SECONDARY[tile_code[1]]["yorg"] + int(tile_code[3]) * 10000
+    #if tile_code in DATA_DICT.keys():
+    #    xorg = DATA_DICT[tile_code]["xorg"]
+    #    yorg = DATA_DICT[tile_code]["yorg"]
     return xorg, yorg
 
 def calculate_offsets(metadata, xorg=340000, yorg=360000):
