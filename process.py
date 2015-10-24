@@ -56,7 +56,7 @@ def main():
     #print("Minimum value found: {}".format(np.nanmin(data)))
     #print("Maximum value found: {}".format(np.nanmax(data)))
 
-    filelist = [0, 1]
+    filelist = [0, 1, 10, 11]
 
     bigdata = np.zeros((5000,5000), dtype=np.float)
     for idx in filelist:
@@ -78,7 +78,7 @@ def calculate_offsets(metadata):
     xorg = 340000
     yorg = 360000
 
-    xoffset = (xorg - metadata["xllcorner"]) / 2
+    xoffset = (metadata["xllcorner"] - xorg) / 2
     yoffset = 5000 - (metadata["yllcorner"] - yorg) / 2
     print("Calculated xoffset, yoffset: {}, {}".format(xoffset, yoffset))
     return xoffset, yoffset
