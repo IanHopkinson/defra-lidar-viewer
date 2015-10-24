@@ -25,6 +25,10 @@ This assumes you have `numpy` and `matplotlib` libraries installed.
 
 ## TODO
 
+Get xorg and yorg automatically from data directory:
+
+http://digimap.edina.ac.uk/webhelp/os/gazetteer_plus/grid_ref_conversion.htm
+
 We could make an image overlay using leafet.js:
 
 http://leafletjs.com/reference.html#imageoverlay 

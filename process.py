@@ -49,6 +49,49 @@ DATA_DICT = {
             "TQ38": {"name":"London", "xorg":530000, "yorg":180000},
             }
 
+# Primary grid: (S, T), (N, O), H going North 500km x 500km
+# Secondary grid: A-Z (omitting I, 5x5) 100km x 100km
+PRIMARY = {
+        "H": {"xorg": 0, "yorg":1500000},
+        "N": {"xorg": 0, "yorg":1000000},
+        "O": {"xorg": 500000, "yorg":1000000},
+        "S": {"xorg": 0, "yorg": 500000},
+        "T": {"xorg": 500000, "yorg": 500000},
+
+}
+
+SECONDARY = {
+        "A": {"xorg": 0, "yorg": 10000},
+        "B": {"xorg": 10000, "yorg": 10000},
+        "C": {"xorg": 20000, "yorg": 10000},
+        "D": {"xorg": 30000, "yorg": 10000},
+        "E": {"xorg": 40000, "yorg": 10000},
+
+        "F": {"xorg": 0, "yorg": 20000},
+        "G": {"xorg": 10000, "yorg": 20000},
+        "H": {"xorg": 20000, "yorg": 20000},
+        "J": {"xorg": 30000, "yorg": 20000},
+        "K": {"xorg": 40000, "yorg": 20000},
+
+        "L": {"xorg": 0, "yorg": 30000},
+        "M": {"xorg": 10000, "yorg": 30000},
+        "N": {"xorg": 20000, "yorg": 30000},
+        "O": {"xorg": 30000, "yorg": 30000},
+        "P": {"xorg": 40000, "yorg": 30000},
+
+        "Q": {"xorg": 0, "yorg": 40000},
+        "R": {"xorg": 10000, "yorg":40000},
+        "S": {"xorg": 20000, "yorg":40000},
+        "T": {"xorg": 30000, "yorg":40000},
+        "U": {"xorg": 40000, "yorg":40000},
+
+        "V": {"xorg": 0, "yorg": 50000},
+        "W": {"xorg": 10000, "yorg": 50000},
+        "X": {"xorg": 20000, "yorg": 50000},
+        "Y": {"xorg": 30000, "yorg": 50000},
+        "Z": {"xorg": 40000, "yorg": 50000},        
+}
+
 DATA_DIR = "C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-ST76"
 
 def main():
@@ -90,6 +133,8 @@ def main():
 
 def tile_origin(datadir):
     tile_code = datadir.split("-")[-1]
+    
+
     if tile_code in DATA_DICT.keys():
         xorg = DATA_DICT[tile_code]["xorg"]
         yorg = DATA_DICT[tile_code]["yorg"]
