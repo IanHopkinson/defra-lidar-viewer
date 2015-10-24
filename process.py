@@ -45,16 +45,16 @@ def main():
 
     # Select a file and then load it into an array
     # 8 - includes home!
-    currentfile = datafiles[7]
+    #currentfile = datafiles[7]
 
-    metadata = get_header_info(currentfile)
-    print(metadata)
+    #metadata = get_header_info(currentfile)
+    #print(metadata)
 
-    data = get_image(currentfile)
+    #data = get_image(currentfile)
 
-    print("Number of NODATA_values: {}".format(np.sum(data == -9999)))
-    print("Minimum value found: {}".format(np.nanmin(data)))
-    print("Maximum value found: {}".format(np.nanmax(data)))
+    #print("Number of NODATA_values: {}".format(np.sum(data == -9999)))
+    #print("Minimum value found: {}".format(np.nanmin(data)))
+    #print("Maximum value found: {}".format(np.nanmax(data)))
 
     filelist = [0]
 
@@ -65,8 +65,7 @@ def main():
         data = get_image(datafiles[idx])        
         data[data == -9999] = np.nan
         # Calculate x,y offset
-        xoffset = 0
-        yoffset = 5000
+        xoffset, yoffset = calculate_offsets(metadata)
         width = 500
         height = 500
         # Write into array
@@ -74,6 +73,15 @@ def main():
     # Show the data
     plot_image(bigdata)
     #plot_surface(data)
+
+def calculate_offsets(metadata):
+    xorg = 340000
+    yorg = 360000
+
+    xoffset = (xorg - metadata["xllcorner"]) / 2
+    yoffset = 5000 - (yorg - metadata["yllcorner"]) / 2
+    print("Calculated xoffset, yoffset: {}, {}".format(xoffset, yoffset))
+    return xoffset, yoffset
 
 def plot_image(data):
     plt.imshow(data, interpolation='nearest', cmap=plt.gray())
