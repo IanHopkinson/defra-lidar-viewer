@@ -43,12 +43,6 @@ def main():
     datafiles = listdir(DATA_DIR)
     print("Found {} datafiles".format(len(datafiles)))
 
-#    for item in datafiles:
-        # Open file
-        
-
-            #print(log_line)
-
     # Select a file and then load it into an array
     # 8 - includes home!
     currentfile = datafiles[7]
@@ -59,12 +53,27 @@ def main():
     data = get_image(currentfile)
 
     print("Number of NODATA_values: {}".format(np.sum(data == -9999)))
-    data[data == -9999] = np.nan
     print("Minimum value found: {}".format(np.nanmin(data)))
     print("Maximum value found: {}".format(np.nanmax(data)))
+
+    filelist = [0]
+
+    bigdata = np.zeros((5000,5000), dtype=np.float)
+    for idx in filelist:
+        # Get data
+        metadata = get_header_info(datafiles[idx])
+        data = get_image(datafiles[idx])        
+        data[data == -9999] = np.nan
+        # Calculate x,y offset
+        xoffset = 0
+        yoffset = 5000
+        width = 500
+        height = 500
+        # Write into array
+        bigdata[yoffset - height:yoffset, xoffset:xoffset + width] = data 
     # Show the data
-    # plot_image(data)
-    plot_surface(data)
+    plot_image(bigdata)
+    #plot_surface(data)
 
 def plot_image(data):
     plt.imshow(data, interpolation='nearest', cmap=plt.gray())
