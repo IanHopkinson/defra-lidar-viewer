@@ -71,3 +71,8 @@ http://www.hannahfry.co.uk/blog/2012/02/01/converting-british-national-grid-to-l
 Get tile origin from OS National Grid reference:
 
 http://digimap.edina.ac.uk/webhelp/os/gazetteer_plus/grid_ref_conversion.htm
+
+Rendering a surface in three.js
+
+http://www.smartjava.org/content/threejs-render-real-world-terrain-heightmap-using-open-data
+
