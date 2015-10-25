@@ -149,7 +149,11 @@ def calculate_offsets(metadata, xorg=340000, yorg=360000):
 
 def plot_image(data):
     plt.imshow(data, interpolation='nearest', cmap=plt.gray())
+    plt.axis('off')
+    plt.margins(0, 0, tight=True)
+    #plt.savefig('pict.png', bbox_inches='tight', pad_inches = 0)
     plt.show()
+    matplotlib.image.imsave('pict.png', data)
 
 def plot_surface(data):
     # generate 3D sample data
