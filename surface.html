@@ -130,7 +130,7 @@
         });
 
         // we use a plain to render as terrain
-        var geometryTerrain = new THREE.PlaneGeometry(2000, 4000, 256, 256);
+        var geometryTerrain = new THREE.PlaneGeometry(5000, 5000, 256, 256);
         geometryTerrain.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI / 2));
         geometryTerrain.computeFaceNormals();
         geometryTerrain.computeVertexNormals();
