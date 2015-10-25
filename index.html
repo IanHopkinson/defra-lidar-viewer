@@ -1,0 +1,39 @@
+<html>
+
+<head>
+    <title>DEFRA LIDAR overlay demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+    <style>
+      body { margin:0; padding:0; }
+      #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+
+<body>
+    <div id='map'></div>
+    <script>
+    var imageUrl = 'SJ46.png',
+        // This is the trickiest part - you'll need accurate coordinates for the
+        // corners of the image. You can find and create appropriate values at
+        // http://maps.nypl.org/warper/ or
+        // http://www.georeferencer.org/
+        imageBounds = L.latLngBounds([
+            [53.133764435944386, -2.89826175096279],
+            [53.2246796160096, -2.7503767412019804]
+        ]);
+
+    var map = L.map('map')
+        .fitBounds(imageBounds);
+
+    L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    var overlay = L.imageOverlay(imageUrl, imageBounds, {opacity: 0.75})
+        .addTo(map);
+    </script>
+</body>
+
+</html>

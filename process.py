@@ -100,8 +100,9 @@ def main():
     print("Found {} datafiles".format(len(datafiles)))
     xorg, yorg = tile_origin(DATA_DIR.split("-")[-1])
 
-    lat_org, lng_org = OSGB36toWGS84(xorg, yorg)
-    print("Origin lat, lng: ({}, {})".format(lat_org, lng_org))
+    lat_ll, lng_ll = OSGB36toWGS84(xorg, yorg) # lower left
+    lat_ur, lng_ur = OSGB36toWGS84(xorg + 10000.0, yorg + 10000.0) #Upper right, hardcoded 10km cell
+    print("Bounding box: [{}, {}], [{}, {}]".format(lat_ll, lng_ll, lat_ur, lng_ur))
     # Select a file and then load it into an array
     # 8 - includes home!
     #currentfile = datafiles[7]
