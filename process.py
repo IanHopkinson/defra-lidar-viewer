@@ -24,9 +24,6 @@ from matplotlib import pyplot as plt
 from coordinate_converter import OSGB36toWGS84
 import matplotlib
 
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
-
 LOGLINE_TEMPLATE = OrderedDict([
     ('name', None),
     ('nrows', None),
@@ -92,7 +89,7 @@ SECONDARY = {
         "Z": {"xorg": 400000, "yorg": 400000},        
 }
 
-DATA_DIR = "C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-SJ46"
+DATA_DIR = "C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-SJ89"
 
 def main():
     datafiles = listdir(DATA_DIR)
@@ -103,20 +100,7 @@ def main():
     lat_ll, lng_ll = OSGB36toWGS84(xorg, yorg) # lower left
     lat_ur, lng_ur = OSGB36toWGS84(xorg + 10000.0, yorg + 10000.0) #Upper right, hardcoded 10km cell
     print("Bounding box: [{}, {}], [{}, {}]".format(lat_ll, lng_ll, lat_ur, lng_ur))
-    # Select a file and then load it into an array
-    # 8 - includes home!
-    #currentfile = datafiles[7]
 
-    #metadata = get_header_info(currentfile)
-    #print(metadata)
-
-    #data = get_image(currentfile)
-
-    #print("Number of NODATA_values: {}".format(np.sum(data == -9999)))
-    #print("Minimum value found: {}".format(np.nanmin(data)))
-    #print("Maximum value found: {}".format(np.nanmax(data)))
-
-    # filelist = [7, 8, 17, 18]
     filelist = [x for x in range(len(datafiles))]
 
     bigdata = np.zeros((5000,5000), dtype=np.float)
@@ -124,7 +108,7 @@ def main():
         # Get data
         metadata = get_header_info(datafiles[idx])
         data = get_image(datafiles[idx])        
-        data[data == -9999] = np.nan
+        data[data == -9999] = 0.0
         # Calculate x,y offset
         xoffset, yoffset = calculate_offsets(metadata, xorg, yorg)
         width = 500
@@ -133,7 +117,6 @@ def main():
         bigdata[yoffset - height:yoffset, xoffset:xoffset + width] = data 
     # Show the data
     plot_image(bigdata)
-    #plot_surface(data)
 
 def tile_origin(tile_code):
     xorg = PRIMARY[tile_code[0]]["xorg"] + SECONDARY[tile_code[1]]["xorg"] + int(tile_code[2]) * 10000
@@ -144,36 +127,17 @@ def tile_origin(tile_code):
     return xorg, yorg
 
 def calculate_offsets(metadata, xorg=340000, yorg=360000):
-    xoffset = (metadata["xllcorner"] - xorg) / 2
-    yoffset = 5000 - (metadata["yllcorner"] - yorg) / 2
+    xoffset = (metadata["xllcorner"] - xorg) / metadata["cellsize"]
+    yoffset = 5000 - (metadata["yllcorner"] - yorg) / metadata["cellsize"]
     return xoffset, yoffset
 
 def plot_image(data):
     plt.imshow(data, interpolation='nearest', cmap=plt.gray())
     plt.axis('off')
     plt.margins(0, 0, tight=True)
-    #plt.savefig('pict.png', bbox_inches='tight', pad_inches = 0)
     plt.show()
-    matplotlib.image.imsave('pict.png', data)
-
-def plot_surface(data):
-    # generate 3D sample data
-
-    fig = plt.figure()
-    ax = fig.gca(projection='3d')
-    X = np.arange(0,500)
-    Y = np.arange(0,500)
-    X, Y = np.meshgrid(X, Y)
-    surf = ax.plot_surface(X, Y, data, linewidth=0, antialiased=False)
-    # ax.set_zlim(-1.01, 1.01)
-
-    # ax.zaxis.set_major_locator(LinearLocator(10))
-    # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
-
-    # fig.colorbar(surf, shrink=0.5, aspect=5)
-
-    plt.show()
-
+    filename = "images/" + DATA_DIR.split("-")[-1]
+    matplotlib.image.imsave(filename, data)
 
 def get_image(filename):
     data = np.zeros((500,500), dtype=np.float)
