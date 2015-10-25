@@ -3,9 +3,10 @@
 <html>
 <head>
     <title></title>
-    <script src="http://www.smartjava.org/examples/heightmap/js/Three.js"></script>
-    <script src="http://www.smartjava.org/examples/heightmap/js/ShaderTerrain.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/Three.js"></script>
+    <script src="js/ShaderTerrain.js"></script>
+    <script src="js/TrackballControls.js"></script>
 </head>
 <body>
  
@@ -14,9 +15,6 @@
 </div>
  
 <script type="text/javascript">
- 
-   
-
     var CONS = {
         // THREE.JS CONSTANTS
         // set the scene size
@@ -69,6 +67,17 @@
         camera.position.x = CONS.CAMERA_X;
         camera.position.y = CONS.CAMERA_Y;
         camera.lookAt(scene.position);
+        
+        // Controls 
+        /* controls = new THREE.TrackballControls( camera );
+        controls.rotateSpeed = 1.0;
+        controls.zoomSpeed = 1.2;
+        controls.panSpeed = 0.8;
+        controls.noZoom = false;
+        controls.noPan = false;
+        controls.staticMoving = true;
+        controls.dynamicDampingFactor = 0.3;
+        */
 
         // add a light
         pointLight = new THREE.PointLight(0xFFFFFF);
@@ -80,10 +89,10 @@
 
 
         // load the heightmap we created as a texture
-        var texture = THREE.ImageUtils.loadTexture('SJ46.png', null, loaded);
+        var texture = THREE.ImageUtils.loadTexture('images/SJ46-512x512.png', null, loaded);
 
         // load two other textures we'll use to make the map look more real
-        var detailTexture = THREE.ImageUtils.loadTexture("bg.jpg", null, loaded);
+        var detailTexture = THREE.ImageUtils.loadTexture("images/bg.jpg", null, loaded);
 
 
         // the following configuration defines how the terrain is rendered
@@ -130,7 +139,7 @@
         });
 
         // we use a plain to render as terrain
-        var geometryTerrain = new THREE.PlaneGeometry(5000, 5000, 256, 256);
+        var geometryTerrain = new THREE.PlaneGeometry(512, 512, 512, 512);
         geometryTerrain.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI / 2));
         geometryTerrain.computeFaceNormals();
         geometryTerrain.computeVertexNormals();
@@ -155,7 +164,7 @@
 
 
     function render() {
-        var timer = Date.now() * 0.0008;
+        var timer = Date.now() * 0.0002;
         camera.position.x = (Math.cos( timer ) *  CONS.CAMERA_X);
         camera.position.z = (Math.sin( timer ) *  CONS.CAMERA_Z) ;
         camera.lookAt( scene.position );
