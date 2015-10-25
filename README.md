@@ -31,6 +31,10 @@ http://leafletjs.com/reference.html#imageoverlay
 
 https://www.mapbox.com/mapbox.js/example/v1.0.0/imageoverlay-georeferenced/
 
+Minimal webserver in Python 3 is:
+
+`python -m http.server 8888 &`
+
 ## Data
 
 Terrain data is an estimation of underlying terrain, surface data is the actual
@@ -60,9 +64,9 @@ This tool converts OS map reference x,y to lat, lng (and shows them on a map)
 
 http://gridreferencefinder.com/
 
-See here for converting OS x,y to lat,lng
+Code for converting OS x,y to lat,lng is by Hannah Fry, described here:
 
-https://bitbucket.org/ian_hopkinson/rail-statistics
+http://www.hannahfry.co.uk/blog/2012/02/01/converting-british-national-grid-to-latitude-and-longitude-ii
 
 Get tile origin from OS National Grid reference:
 

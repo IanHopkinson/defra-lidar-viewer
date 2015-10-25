@@ -14,6 +14,18 @@
 #NODATA_value  -9999
 
 from collections import OrderedDict
+from os import listdir
+import os.path
+
+import numpy as np
+
+from matplotlib import pyplot as plt
+
+from coordinate_converter import OSGB36toWGS84
+import matplotlib
+
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
 LOGLINE_TEMPLATE = OrderedDict([
     ('name', None),
@@ -25,17 +37,6 @@ LOGLINE_TEMPLATE = OrderedDict([
     ('NODATA_value', None),
 ])
 
-from os import listdir
-import os.path
-
-import numpy as np
-
-from matplotlib import pyplot as plt
-import matplotlib
-
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
-
 DATA_DICT = {
             "NY22": {"name":"Keswick", "xorg":320000, "yorg":520000},
             "NZ26": {"name":"Newscastle", "xorg":420000, "yorg":560000},
@@ -44,6 +45,7 @@ DATA_DICT = {
             "SJ89": {"name":"Manchester", "xorg":380000, "yorg":390000},
             "SO74": {"name":"Malvern", "xorg":370000, "yorg":240000},
             "ST76": {"name":"Bath", "xorg":370000, "yorg":160000},
+            "ST98": {"name":"Corfe Castle", "xorg":390000, "yorg":80000},
             "TQ38": {"name":"London", "xorg":530000, "yorg":180000},
             }
 
@@ -90,13 +92,16 @@ SECONDARY = {
         "Z": {"xorg": 400000, "yorg": 400000},        
 }
 
-DATA_DIR = "C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-ST76"
+DATA_DIR = "C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-SJ46"
 
 def main():
     datafiles = listdir(DATA_DIR)
+    print("Directory: {}".format(DATA_DIR))
     print("Found {} datafiles".format(len(datafiles)))
     xorg, yorg = tile_origin(DATA_DIR.split("-")[-1])
 
+    lat_org, lng_org = OSGB36toWGS84(xorg, yorg)
+    print("Origin lat, lng: ({}, {})".format(lat_org, lng_org))
     # Select a file and then load it into an array
     # 8 - includes home!
     #currentfile = datafiles[7]
