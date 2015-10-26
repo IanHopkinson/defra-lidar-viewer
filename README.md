@@ -23,9 +23,7 @@ This assumes you have `numpy` and `matplotlib` libraries installed.
 
 There are minimal tests which can be run by doing `nosetests`, assuming you have `nosetests` installed
 
-There are currently two experimental HTML/Javascript visualisations which 
-
-To run them, run the minimal webserver in Python 3:
+There are currently two experimental HTML/Javascript visualisations. To run them, run the minimal webserver in Python 3:
 
 `python -m http.server 8888 &`
 
@@ -33,7 +31,8 @@ And then navigate to `localhost:8888` for a `leaflet.js` map overlay visualisati
 you to edit the name of the exported tile image and bounding box into `index.html`
 
 Navigate to `localhost:8888/surface.html` to see a whizzy 3D surface rendering, just edit in the
-appropriate image file name to `surface.html`
+appropriate image file name to `surface.html`. Holding left-mouse (or A) and moving the mouse rotates the view,
+right-mouse-button (or D) pans the view, middle-mouse-button (or S) zooms the view.  
 
 ## TODO
 
