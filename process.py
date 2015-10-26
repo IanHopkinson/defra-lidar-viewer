@@ -107,7 +107,6 @@ def main(argv=None):
         list_available_data()
         return
 
-
     datafiles = listdir(DATA_DIR)
     print("Directory: {}".format(DATA_DIR))
     print("Found {} datafiles".format(len(datafiles)))
@@ -134,15 +133,16 @@ def main(argv=None):
     # Show the data
     plot_image(bigdata)
 
+    # Export the data to an image
+    filename = "images/" + DATA_DIR.split("-")[-1]
+    matplotlib.image.imsave(filename, bigdata, cmap=plt.gray())
+
 def list_available_data():
     print("Lookin' for data!")
 
 def tile_origin(tile_code):
     xorg = PRIMARY[tile_code[0]]["xorg"] + SECONDARY[tile_code[1]]["xorg"] + int(tile_code[2]) * 10000
     yorg = PRIMARY[tile_code[0]]["yorg"] - SECONDARY[tile_code[1]]["yorg"] + int(tile_code[3]) * 10000
-    #if tile_code in DATA_DICT.keys():
-    #    xorg = DATA_DICT[tile_code]["xorg"]
-    #    yorg = DATA_DICT[tile_code]["yorg"]
     return xorg, yorg
 
 def calculate_offsets(metadata, xorg=340000, yorg=360000):
@@ -155,8 +155,6 @@ def plot_image(data):
     plt.axis('off')
     plt.margins(0, 0, tight=True)
     plt.show()
-    filename = "images/" + DATA_DIR.split("-")[-1]
-    matplotlib.image.imsave(filename, data)
 
 def get_image(filename):
     data = np.zeros((500,500), dtype=np.float)
