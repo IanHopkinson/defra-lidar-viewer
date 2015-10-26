@@ -14,6 +14,7 @@
 #NODATA_value  -9999
 
 from collections import OrderedDict
+import json
 from os import listdir
 import os.path
 import sys
@@ -84,25 +85,40 @@ DATA_DIR = ""
 
 def main(argv=None):
     global DATA_DIR
+    # Process commandline arguments
     if argv is None:
         argv = sys.argv
     arg = argv[1:]
 
+    os_grid_cell = ""
     if len(arg) == 1:
-        DATA_DIR = DATA_DIR_TEMPLATE.format(OS_grid_cell=arg[0])
+        os_grid_cell = arg[0]
+        DATA_DIR = DATA_DIR_TEMPLATE.format(OS_grid_cell=os_grid_cell)
     else: 
         list_available_data()
         return
 
+    # Report on datafiles
     datafiles = listdir(DATA_DIR)
     print("Directory: {}".format(DATA_DIR))
     print("Found {} datafiles".format(len(datafiles)))
-    xorg, yorg = tile_origin(DATA_DIR.split("-")[-1])
+    xorg, yorg = tile_origin(os_grid_cell)
 
+    # Calculate bounding box
     lat_ll, lng_ll = OSGB36toWGS84(xorg, yorg) # lower left
     lat_ur, lng_ur = OSGB36toWGS84(xorg + 10000.0, yorg + 10000.0) #Upper right, hardcoded 10km cell
-    print("Bounding box: [{}, {}], [{}, {}]".format(lat_ll, lng_ll, lat_ur, lng_ur))
+    bb = "[{}, {}], [{}, {}]".format(lat_ll, lng_ll, lat_ur, lng_ur)
+    print("Bounding box: {}".format(bb))
 
+    # Write bounding box to data_dict
+    with open('data_dict.json') as data_file:    
+        data_dict = json.load(data_file)
+
+    data_dict[os_grid_cell]["bb"] = bb
+    with open('data_dict.json', 'w') as outfile:
+        json.dump(data_dict, outfile, sort_keys=True, indent=4)
+
+    # Iterate over datafiles
     filelist = [x for x in range(len(datafiles))]
 
     bigdata = np.zeros((5000,5000), dtype=np.float)
@@ -121,7 +137,7 @@ def main(argv=None):
     plot_image(bigdata)
 
     # Export the data to an image
-    filename = "images/" + DATA_DIR.split("-")[-1]
+    filename = "images/" + os_grid_cell
     matplotlib.image.imsave(filename, bigdata, cmap=plt.gray())
 
 def list_available_data():
