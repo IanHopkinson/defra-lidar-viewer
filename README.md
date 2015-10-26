@@ -37,7 +37,13 @@ appropriate image file name to `surface.html`
 
 ## TODO
 
-* Fix irritating mismatch problem with the leaflet.js visualisation
+* Improve rendering of surface.html view
+* Add trackball/interactive control to surface.html view
+* Fix mismatch problem with the leaflet.js visualisation
+* Export bounding box for leaflet.js view
+* Autodownload of data
+* Remove hardcoding of OS National Grid Tile in process.py, surface.html and index.html
+* Remove hardcoded assumption about tile size/resolution
 
 ## Data
 
@@ -86,3 +92,6 @@ Rendering a surface in three.js
 
 http://www.smartjava.org/content/threejs-render-real-world-terrain-heightmap-using-open-data
 
+Adding a trackball interactive control to three.js
+
+http://stackoverflow.com/questions/18347256/trackballcontrols-in-three-js

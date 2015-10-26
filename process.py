@@ -54,7 +54,6 @@ PRIMARY = {
         "O": {"xorg": 500000, "yorg":900000},
         "S": {"xorg": 0, "yorg": 400000},
         "T": {"xorg": 500000, "yorg": 400000},
-
 }
 
 SECONDARY = {
