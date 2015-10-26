@@ -43,6 +43,7 @@ DATA_DICT = {
             "SO74": {"name":"Malvern", "xorg":370000, "yorg":240000},
             "ST76": {"name":"Bath", "xorg":370000, "yorg":160000},
             "ST98": {"name":"Corfe Castle", "xorg":390000, "yorg":80000},
+            "SY68": {"name":"Maiden Castle", "xorg":360000, "yorg":80000},
             "TQ38": {"name":"London", "xorg":530000, "yorg":180000},
             }
 
@@ -88,7 +89,7 @@ SECONDARY = {
         "Z": {"xorg": 400000, "yorg": 400000},        
 }
 
-DATA_DIR = "C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-SJ89"
+DATA_DIR = "C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-ST76"
 
 def main():
     datafiles = listdir(DATA_DIR)

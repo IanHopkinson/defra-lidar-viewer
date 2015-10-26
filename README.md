@@ -37,13 +37,12 @@ appropriate image file name to `surface.html`
 
 ## TODO
 
-* Improve rendering of surface.html view
-* Add trackball/interactive control to surface.html view
 * Fix mismatch problem with the leaflet.js visualisation
 * Export bounding box for leaflet.js view
 * Autodownload of data
 * Remove hardcoding of OS National Grid Tile in process.py, surface.html and index.html
 * Remove hardcoded assumption about tile size/resolution
+* Do image visualisation in HTML/Javascript for consistency across 3 views
 
 ## Data
 

@@ -96,7 +96,7 @@
 
 
         // load the heightmap we created as a texture
-        var texture = THREE.ImageUtils.loadTexture('images/SJ46-512x512.png', null, loaded);
+        var texture = THREE.ImageUtils.loadTexture('images/ST76-bath-1024x1024.png', null, loaded);
 
         // load two other textures we'll use to make the map look more real
         var detailTexture = THREE.ImageUtils.loadTexture("images/bg-plain.jpg", null, loaded);
@@ -167,13 +167,11 @@
     function animate() {
         requestAnimationFrame(animate);
         controls.update();
-
     }
 
     function render() {
         renderer.render(scene, camera);
-        stats.update();
-
+        //stats.update();
     }
     </script>
 </body>
