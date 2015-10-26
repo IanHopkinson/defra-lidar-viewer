@@ -16,6 +16,7 @@
 from collections import OrderedDict
 from os import listdir
 import os.path
+import sys
 
 import numpy as np
 
@@ -23,6 +24,7 @@ from matplotlib import pyplot as plt
 
 from coordinate_converter import OSGB36toWGS84
 import matplotlib
+
 
 LOGLINE_TEMPLATE = OrderedDict([
     ('name', None),
@@ -89,9 +91,23 @@ SECONDARY = {
         "Z": {"xorg": 400000, "yorg": 400000},        
 }
 
-DATA_DIR = "C:\\BigData\\defra-lidar\\LIDAR-DSM-2M-ST76"
+DATA_ROOT_DIR = "C:\\BigData\\defra-lidar\\"
+DATA_DIR_TEMPLATE = DATA_ROOT_DIR + "LIDAR-DSM-2M-{OS_grid_cell}"
+DATA_DIR = ""
 
-def main():
+def main(argv=None):
+    global DATA_DIR
+    if argv is None:
+        argv = sys.argv
+    arg = argv[1:]
+
+    if len(arg) == 1:
+        DATA_DIR = DATA_DIR_TEMPLATE.format(OS_grid_cell=arg[0])
+    else: 
+        list_available_data()
+        return
+
+
     datafiles = listdir(DATA_DIR)
     print("Directory: {}".format(DATA_DIR))
     print("Found {} datafiles".format(len(datafiles)))
@@ -117,6 +133,9 @@ def main():
         bigdata[yoffset - height:yoffset, xoffset:xoffset + width] = data 
     # Show the data
     plot_image(bigdata)
+
+def list_available_data():
+    print("Lookin' for data!")
 
 def tile_origin(tile_code):
     xorg = PRIMARY[tile_code[0]]["xorg"] + SECONDARY[tile_code[1]]["xorg"] + int(tile_code[2]) * 10000

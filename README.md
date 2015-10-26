@@ -2,7 +2,11 @@
 
 ## Usage
 
-`process.py` will display a window showing the data from a LIDAR map tile.
+`process.py {OS_grid_cell}` will display a window showing the data from a LIDAR map tile.
+`OS_grid_cell` is, for example, `SJ46` for Chester. The data is assumed to be in a directory name of the
+form:
+
+`LIDAR-DSM-2M-{OS_grid_cell}`
 
 These data must be downloaded manually from:
 
