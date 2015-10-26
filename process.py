@@ -36,19 +36,6 @@ LOGLINE_TEMPLATE = OrderedDict([
     ('NODATA_value', None),
 ])
 
-DATA_DICT = {
-            "NY22": {"name":"Keswick", "xorg":320000, "yorg":520000},
-            "NZ26": {"name":"Newscastle", "xorg":420000, "yorg":560000},
-            "SJ36": {"name":"Deeside", "xorg":330000, "yorg":360000},
-            "SJ46": {"name":"Chester", "xorg":340000, "yorg":360000},
-            "SJ89": {"name":"Manchester", "xorg":380000, "yorg":390000},
-            "SO74": {"name":"Malvern", "xorg":370000, "yorg":240000},
-            "ST76": {"name":"Bath", "xorg":370000, "yorg":160000},
-            "ST98": {"name":"Corfe Castle", "xorg":390000, "yorg":80000},
-            "SY68": {"name":"Maiden Castle", "xorg":360000, "yorg":80000},
-            "TQ38": {"name":"London", "xorg":530000, "yorg":180000},
-            }
-
 # Primary grid: (S, T), (N, O), H going North 500km x 500km
 # Secondary grid: A-Z (omitting I, 5x5) 100km x 100km
 PRIMARY = {
