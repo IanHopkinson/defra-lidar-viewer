@@ -6,22 +6,67 @@
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
     <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
     <style>
-      body { margin:0; padding:0; }
-      #map { position:absolute; top:0; bottom:0; width:100%; }
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+    }
+    </style>
+    <style>
+    .ui-opacity {
+        background: #FFF;
+        position: absolute;
+        left: 10px;
+        top: 70px;
+        height: 200px;
+        width: 28px;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        border-radius: 3px;
+        z-index: 1000;
+    }
+    
+    .ui-opacity .handle {
+        position: absolute;
+        background: #404040;
+        left: 0;
+        top: 20px;
+        width: 26px;
+        height: 10px;
+        border-radius: 1px;
+        cursor: pointer;
+        cursor: ns-resize;
+    }
+    
+    .ui-opacity .handle:hover {
+        background: #303030;
+    }
     </style>
 </head>
 
 <body>
     <div id='map'></div>
+    <div id='control' class='ui-opacity'>
+        <div id='handle' class='handle'></div>
+    </div>
     <script>
-    var imageUrl = 'images/SJ89.png',
+    var handle = document.getElementById('handle'),
+        start = false,
+        startTop;
+
+    var imageUrl = 'images/NZ26.png',
         // This is the trickiest part - you'll need accurate coordinates for the
         // corners of the image. You can find and create appropriate values at
         // http://maps.nypl.org/warper/ or
         // http://www.georeferencer.org/
         imageBounds = L.latLngBounds([
-            [53.40643365472051, -2.3023059698781703], 
-            [53.49660449796414, -2.1522080069870135]
+            [54.934278140326086, -1.6893950482325808],
+            [55.023638489796355, -1.532289651205525]
         ]);
 
     var map = L.map('map')
@@ -31,8 +76,29 @@
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
-    var overlay = L.imageOverlay(imageUrl, imageBounds, {opacity: 0.75})
+    var overlay = L.imageOverlay(imageUrl, imageBounds, {
+            opacity: 1.00
+        })
         .addTo(map);
+
+    document.onmousemove = function(e) {
+        if (!start) return;
+        // Adjust control.
+        handle.style.top = Math.max(-5, Math.min(195, startTop + parseInt(e.clientY, 10) - start)) + 'px';
+        // Adjust opacity.
+        overlay.setOpacity(1 - (handle.offsetTop / 200));
+    };
+
+    handle.onmousedown = function(e) {
+        // Record initial positions.
+        start = parseInt(e.clientY, 10);
+        startTop = handle.offsetTop - 5;
+        return false;
+    };
+
+    document.onmouseup = function(e) {
+        start = null;
+    };
     </script>
 </body>
 
