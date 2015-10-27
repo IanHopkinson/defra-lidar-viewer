@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
     <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <style>
     body {
         margin: 0;
@@ -46,6 +47,19 @@
     .ui-opacity .handle:hover {
         background: #303030;
     }
+
+    #file-selector-container {
+        background: #FFF;
+        position: absolute;
+        left: 50px;
+        top: 10px;
+        height: 28px;
+        width: 400px;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        border-radius: 3px;
+        z-index: 999;
+    }
+
     </style>
 </head>
 
@@ -53,6 +67,13 @@
     <div id='map'></div>
     <div id='control' class='ui-opacity'>
         <div id='handle' class='handle'></div>
+    </div>
+    <div id='file-selector-container'>
+        <div id='file-selector'>
+            Select an OS National Grid Square
+            <select id="os-grid">
+            <select>
+        </div>
     </div>
     <script>
     var handle = document.getElementById('handle'),
@@ -80,6 +101,14 @@
             opacity: 1.00
         })
         .addTo(map);
+
+    var data;
+    $.getJSON( "data_dict.json", function( data ) {
+        var options = '';
+        console.log(data)
+        $.each(data, function(key, item){options += '<option value="'+ key +'">' + item.name + '</option>';})
+        $("#os-grid").html(options);
+    });
 
     document.onmousemove = function(e) {
         if (!start) return;

@@ -43,6 +43,7 @@ right-mouse-button (or D) pans the view, middle-mouse-button (or S) zooms the vi
 
 * Remove hardcoding of OS National Grid Tile in surface.html and index.html
 * Read bounding box in leaflet.js
+* Check behaviour of process.py when a requested dataset does not have an entry in data_dict
 * Add a second positional argument to process.py for a tile name
 * Fix mismatch problem with the leaflet.js visualisation
 * Autodownload of data
