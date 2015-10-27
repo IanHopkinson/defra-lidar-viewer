@@ -40,12 +40,13 @@ right-mouse-button (or D) pans the view, middle-mouse-button (or S) zooms the vi
 
 ## TODO
 
+* Remove hardcoding of OS National Grid Tile in surface.html and index.html
+* Read bounding box in leaflet.js
+* Add a second positional argument to process.py for a tile name
 * Fix mismatch problem with the leaflet.js visualisation
-* Export bounding box for leaflet.js view
 * Autodownload of data
-* Remove hardcoding of OS National Grid Tile in process.py, surface.html and index.html
 * Remove hardcoded assumption about tile size/resolution
-* Do image visualisation in HTML/Javascript for consistency across 3 views
+
 
 ## Data
 
@@ -97,3 +98,7 @@ http://www.smartjava.org/content/threejs-render-real-world-terrain-heightmap-usi
 Adding a trackball interactive control to three.js
 
 http://stackoverflow.com/questions/18347256/trackballcontrols-in-three-js
+
+Opacity controller is lifted from a Mapbox demo:
+
+https://www.mapbox.com/mapbox.js/example/v1.0.0/opacity/
