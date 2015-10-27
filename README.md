@@ -1,5 +1,7 @@
 # LIDAR data from DEFRA
 
+![St Paul's cathedral LIDAR](images/StPauls-3D.png?raw=true)
+
 ## Usage
 
 `process.py {OS_grid_cell}` will display a window showing the data from a LIDAR map tile.
