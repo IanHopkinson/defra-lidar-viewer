@@ -96,7 +96,7 @@
 
 
         // load the heightmap we created as a texture
-        var texture = THREE.ImageUtils.loadTexture('images/ST76-bath-1024x1024.png', null, loaded);
+        var texture = THREE.ImageUtils.loadTexture('images/TQ38-StPauls-512x512.png', null, loaded);
 
         // load two other textures we'll use to make the map look more real
         var detailTexture = THREE.ImageUtils.loadTexture("images/bg-plain.jpg", null, loaded);
@@ -113,7 +113,7 @@
         // the displacement determines the height of a vector, mapped to
         // the heightmap
         uniformsTerrain["tDisplacement"].texture = texture;
-        uniformsTerrain["uDisplacementScale"].value = 100;
+        uniformsTerrain["uDisplacementScale"].value = 200;
 
         // the following textures can be use to finetune how
         // the map is shown. These are good defaults for simple
