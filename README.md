@@ -17,8 +17,9 @@ Terrain and Surface files.
 
 Once downloaded and unzipped, change `DATA_DIR` to the appropriate location.
 
-Then just run `./process.py`, and after a shortish pause (<1 minute) you should see a greyscale
-image of your map tile with height encoded as shade (black = lowest, white = highest).
+Run `./process.py`, and after a shortish pause (<1 minute) you should see a greyscale
+image of your map tile with height encoded as shade (black = lowest, white = highest). This
+image is written at full resolution to the `images/` directory with the name `{OS_grid_cell}.png`.
 
 Nominally there are 100 subtiles to a set but some are missing and appear as black squares,
 some locations have NODATA, these appear white in the image.
@@ -31,8 +32,8 @@ There are currently two experimental HTML/Javascript visualisations. To run them
 
 `python -m http.server 8888 &`
 
-And then navigate to `localhost:8888` for a `leaflet.js` map overlay visualisation, it requires
-you to edit the name of the exported tile image and bounding box into `index.html`
+And then navigate to `localhost:8888` for a `leaflet.js` map overlay visualisation, the available images and their
+bounding boxes will be picked up from the `data_dict.json` file which is updated when `process.py` is run. 
 
 Navigate to `localhost:8888/surface.html` to see a whizzy 3D surface rendering, just edit in the
 appropriate image file name to `surface.html`. (I've been making 512x512 pixel crops of the full sized images using Paint .NET.)
@@ -41,8 +42,7 @@ right-mouse-button (or D) pans the view, middle-mouse-button (or S) zooms the vi
 
 ## TODO
 
-* Remove hardcoding of OS National Grid Tile in surface.html and index.html
-* Read bounding box in leaflet.js
+* Remove hardcoding of OS National Grid Tile in surface.html
 * Check behaviour of process.py when a requested dataset does not have an entry in data_dict
 * Add a second positional argument to process.py for a tile name
 * Fix mismatch problem with the leaflet.js visualisation
