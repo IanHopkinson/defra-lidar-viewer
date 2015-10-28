@@ -1,6 +1,6 @@
 # LIDAR data from DEFRA
 
-![St Paul's cathedral LIDAR](images/StPauls-3D.png?raw=true)
+![St Paul's cathedral LIDAR](figures/StPauls-3D.png?raw=true)
 
 ## Usage
 

@@ -9,10 +9,30 @@
     <script src="js/ShaderTerrain.js"></script>
     <!--<script src="js/Stats.js"></script>-->
     <!--<script src="js/TrackballControls.js"></script>-->
+    <style>
+    #file-selector-container {
+        background: #FFF;
+        position: absolute;
+        left: 50px;
+        top: 10px;
+        height: 28px;
+        width: 400px;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        border-radius: 3px;
+        z-index: 999;
+    }
+    </style>
 </head>
 
 <body>
     <div id="main_map">
+    </div>
+    <div id='file-selector-container'>
+        <div id='file-selector'>
+            Select a LIDAR image file
+            <select id="LIDAR-image">
+            <select>
+        </div>
     </div>
     <script type="text/javascript">
     var CONS = {
@@ -40,6 +60,21 @@
     var n = 0;
     initMap();
     animate();
+
+    $.ajax({ url: 'images', success: function(data) { 
+        var elements = $(data);
+        var found = $('li', elements);
+        var options = '';
+        $.each(found, function(item){
+            filename = $(this).text()
+            if (filename.length != 8 && filename != "bg.jpg" && filename != "bg-plain.jpg" ){
+                options += '<option value="'+ filename +'">' + filename + '</option>'
+            }
+        ;})
+
+        $("#LIDAR-image").html(options);
+        } 
+    });
 
     // Wait until everything is loaded before continuing
     function loaded() {
