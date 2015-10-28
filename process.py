@@ -83,6 +83,8 @@ DATA_ROOT_DIR = "C:\\BigData\\defra-lidar\\"
 DATA_DIR_TEMPLATE = DATA_ROOT_DIR + "LIDAR-DSM-2M-{OS_grid_cell}"
 DATA_DIR = ""
 
+OS_GRID_SIZE = 10000.0
+
 def main(argv=None):
     global DATA_DIR
     # Process commandline arguments
@@ -112,7 +114,7 @@ def main(argv=None):
 
     # Calculate bounding box
     lat_ll, lng_ll = OSGB36toWGS84(xorg, yorg) # lower left
-    lat_ur, lng_ur = OSGB36toWGS84(xorg + 10000.0, yorg + 10000.0) #Upper right, hardcoded 10km cell
+    lat_ur, lng_ur = OSGB36toWGS84(xorg + OS_GRID_SIZE, yorg + OS_GRID_SIZE) 
     bb = "[{}, {}], [{}, {}]".format(lat_ll, lng_ll, lat_ur, lng_ur)
     print("Bounding box: {}".format(bb))
 
@@ -135,16 +137,21 @@ def main(argv=None):
     # Iterate over datafiles
     filelist = [x for x in range(len(datafiles))]
 
-    bigdata = np.zeros((5000,5000), dtype=np.float)
+    # Assume all tiles in a dataset have the same ncols, nrows, cellsize and NODATA_value
+    metadata = get_header_info(datafiles[0])
+    # Output_data_size is OS_GRID_SIZE/cellsize
+    output_data_size = OS_GRID_SIZE / metadata["cellsize"]
+
+    bigdata = np.zeros((output_data_size, output_data_size), dtype=np.float)
     for idx in filelist:
         # Get data
         metadata = get_header_info(datafiles[idx])
-        data = get_image(datafiles[idx])        
+        data = get_image(datafiles[idx], metadata["ncols"], metadata["nrows"])        
         data[data == -9999] = 0.0
         # Calculate x,y offset
-        xoffset, yoffset = calculate_offsets(metadata, xorg, yorg)
-        width = 500
-        height = 500
+        xoffset, yoffset = calculate_offsets(metadata, output_data_size, xorg, yorg)
+        width = metadata["ncols"]
+        height = metadata["nrows"]
         # Write into array
         bigdata[yoffset - height:yoffset, xoffset:xoffset + width] = data 
     # Show the data
@@ -158,13 +165,13 @@ def list_available_data():
     print("Lookin' for data!")
 
 def tile_origin(tile_code):
-    xorg = PRIMARY[tile_code[0]]["xorg"] + SECONDARY[tile_code[1]]["xorg"] + int(tile_code[2]) * 10000
-    yorg = PRIMARY[tile_code[0]]["yorg"] - SECONDARY[tile_code[1]]["yorg"] + int(tile_code[3]) * 10000
+    xorg = PRIMARY[tile_code[0]]["xorg"] + SECONDARY[tile_code[1]]["xorg"] + int(tile_code[2]) * OS_GRID_SIZE
+    yorg = PRIMARY[tile_code[0]]["yorg"] - SECONDARY[tile_code[1]]["yorg"] + int(tile_code[3]) * OS_GRID_SIZE
     return xorg, yorg
 
-def calculate_offsets(metadata, xorg=340000, yorg=360000):
+def calculate_offsets(metadata, output_data_size, xorg, yorg):
     xoffset = (metadata["xllcorner"] - xorg) / metadata["cellsize"]
-    yoffset = 5000 - (metadata["yllcorner"] - yorg) / metadata["cellsize"]
+    yoffset = output_data_size - (metadata["yllcorner"] - yorg) / metadata["cellsize"]
     return xoffset, yoffset
 
 def plot_image(data):
@@ -173,14 +180,14 @@ def plot_image(data):
     plt.margins(0, 0, tight=True)
     plt.show()
 
-def get_image(filename):
-    data = np.zeros((500,500), dtype=np.float)
+def get_image(filename, ncols, nrows):
+    data = np.zeros((ncols, nrows), dtype=np.float)
     with open(os.path.join(DATA_DIR, filename)) as f:
         content = f.readlines()
         idx = 0
         for line in content:
             parts = line.split()
-            if len(parts) == 500:
+            if len(parts) == ncols:
                 data[idx,] = [float(x) for x in parts]
                 idx = idx + 1 
     return data
@@ -193,7 +200,7 @@ def get_header_info(filename):
         for line in content:
             parts = line.split()
             #assert len(parts) in [1,2]
-            if len(parts) == 500:
+            if len(parts) != 2:
                 break
             elif len(parts) == 2:
                 if parts[0] == "nrows":

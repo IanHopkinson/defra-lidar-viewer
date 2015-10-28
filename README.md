@@ -45,10 +45,12 @@ right-mouse-button (or D) pans the view, middle-mouse-button (or S) zooms the vi
 
 ## TODO
 
+* Process a 1m dataset
 * Fix mismatch problem with the leaflet.js visualisation
 * Autodownload of data
-* Remove hardcoded assumption about tile size/resolution
-* Select in leaflet.js and go to surface view
+* Select in leaflet.js and go to surface view, this looks handy:
+
+https://github.com/heyman/leaflet-areaselect/
 
 ## Data
 
