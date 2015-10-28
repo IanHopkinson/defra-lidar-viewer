@@ -55,11 +55,8 @@
     var renderer = {};
     var camera = {};
     var controls;
-
-
+    var LIDARfile = '';
     var n = 0;
-    initMap();
-    animate();
 
     $.ajax({ url: 'images', success: function(data) { 
         var elements = $(data);
@@ -67,7 +64,7 @@
         var options = '';
         $.each(found, function(item){
             filename = $(this).text()
-            if (filename.length != 8 && filename != "bg.jpg" && filename != "bg-plain.jpg" ){
+            if (filename != "bg.jpg" && filename != "bg-plain.jpg" ){
                 options += '<option value="'+ filename +'">' + filename + '</option>'
             }
         ;})
@@ -75,6 +72,21 @@
         $("#LIDAR-image").html(options);
         } 
     });
+
+    $('#LIDAR-image').change(function() {
+        var val = $("#LIDAR-image option:selected").val();
+        scene = {};
+        renderer = {};
+        camera = {};
+        controls;
+        LIDARfile = '';
+        n = 0;
+        
+        LIDARfile = "images/" + val
+        initMap();
+        animate();
+    });
+
 
     // Wait until everything is loaded before continuing
     function loaded() {
@@ -105,7 +117,7 @@
         camera.lookAt(scene.position);
 
         // Controls 
-        controls = new THREE.TrackballControls(camera);
+        controls = new THREE.TrackballControls(camera, renderer.domElement);
 
         controls.rotateSpeed = 2.0;
         controls.zoomSpeed = 2.0;
@@ -131,7 +143,7 @@
 
 
         // load the heightmap we created as a texture
-        var texture = THREE.ImageUtils.loadTexture('images/TQ38-StPauls-512x512.png', null, loaded);
+        var texture = THREE.ImageUtils.loadTexture(LIDARfile, null, loaded);
 
         // load two other textures we'll use to make the map look more real
         var detailTexture = THREE.ImageUtils.loadTexture("images/bg-plain.jpg", null, loaded);
