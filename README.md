@@ -45,7 +45,7 @@ right-mouse-button (or D) pans the view, middle-mouse-button (or S) zooms the vi
 
 ## TODO
 
-* Process a 1m dataset
+* Trying to process a 25cm dataset we get off-by-one errors in yoffset (and the image is too large for imshow)
 * Fix mismatch problem with the leaflet.js visualisation
 * Autodownload of data
 * Select in leaflet.js and go to surface view, this looks handy:

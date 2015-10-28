@@ -103,8 +103,11 @@ def main(argv=None):
         name = arg[1]
         DATA_DIR = DATA_DIR_TEMPLATE.format(OS_grid_cell=os_grid_cell)
     else: 
-        list_available_data()
-        return
+        DATA_DIR = DATA_ROOT_DIR + "LIDAR-DSM-25CM-SO84"
+        os_grid_cell = "SO84"
+        print("Exceptional data: {}".format(DATA_DIR))
+        #list_available_data()
+        #return
 
     # Report on datafiles
     datafiles = listdir(DATA_DIR)
@@ -165,13 +168,13 @@ def list_available_data():
     print("Lookin' for data!")
 
 def tile_origin(tile_code):
-    xorg = PRIMARY[tile_code[0]]["xorg"] + SECONDARY[tile_code[1]]["xorg"] + int(tile_code[2]) * OS_GRID_SIZE
-    yorg = PRIMARY[tile_code[0]]["yorg"] - SECONDARY[tile_code[1]]["yorg"] + int(tile_code[3]) * OS_GRID_SIZE
+    xorg = PRIMARY[tile_code[0]]["xorg"] + SECONDARY[tile_code[1]]["xorg"] + float(tile_code[2]) * OS_GRID_SIZE
+    yorg = PRIMARY[tile_code[0]]["yorg"] - SECONDARY[tile_code[1]]["yorg"] + float(tile_code[3]) * OS_GRID_SIZE
     return xorg, yorg
 
 def calculate_offsets(metadata, output_data_size, xorg, yorg):
-    xoffset = (metadata["xllcorner"] - xorg) / metadata["cellsize"]
-    yoffset = output_data_size - (metadata["yllcorner"] - yorg) / metadata["cellsize"]
+    xoffset = (metadata["xllcorner"] - xorg) / float(metadata["cellsize"])
+    yoffset = output_data_size - (metadata["yllcorner"] - yorg) / float(metadata["cellsize"])
     return xoffset, yoffset
 
 def plot_image(data):
@@ -189,7 +192,7 @@ def get_image(filename, ncols, nrows):
             parts = line.split()
             if len(parts) == ncols:
                 data[idx,] = [float(x) for x in parts]
-                idx = idx + 1 
+                idx = idx + 1
     return data
 
 def get_header_info(filename):
@@ -208,11 +211,11 @@ def get_header_info(filename):
                 elif parts[0] == "ncols":
                     log_line["ncols"] = int(parts[1])
                 elif parts[0] == "xllcorner":
-                    log_line["xllcorner"] = int(parts[1])
+                    log_line["xllcorner"] = float(parts[1])
                 elif parts[0] == "yllcorner":
-                    log_line["yllcorner"] = int(parts[1])
+                    log_line["yllcorner"] = float(parts[1])
                 elif parts[0] == "cellsize":
-                    log_line["cellsize"] = int(parts[1])
+                    log_line["cellsize"] = float(parts[1])
                 elif parts[0] == "NODATA_value":
                     log_line["NODATA_value"] = int(parts[1])
                 else:
