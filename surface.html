@@ -54,6 +54,13 @@
     var scene = {};
     var renderer = {};
     var camera = {};
+    var texture = {};
+    var detailTexture = {};
+    var terrainShader = {};
+    var uniformsTerrain = {};
+    var material = {};
+    var geometryTerrain = {};
+
     var controls;
     var LIDARfile = '';
     var n = 0;
@@ -78,10 +85,17 @@
         scene = {};
         renderer = {};
         camera = {};
-        controls;
+        controls = {};
+        texture = {};
+        detailTexture = {};
+        terrainShader = {};
+        uniformsTerrain = {};
+        material = {};
+        geometryTerrain = {};
+
         LIDARfile = '';
         n = 0;
-        
+
         LIDARfile = "images/" + val
         initMap();
         animate();
@@ -143,15 +157,15 @@
 
 
         // load the heightmap we created as a texture
-        var texture = THREE.ImageUtils.loadTexture(LIDARfile, null, loaded);
+        texture = THREE.ImageUtils.loadTexture(LIDARfile, null, loaded);
 
         // load two other textures we'll use to make the map look more real
-        var detailTexture = THREE.ImageUtils.loadTexture("images/bg-plain.jpg", null, loaded);
+        detailTexture = THREE.ImageUtils.loadTexture("images/bg-plain.jpg", null, loaded);
 
 
         // the following configuration defines how the terrain is rendered
-        var terrainShader = THREE.ShaderTerrain["terrain"];
-        var uniformsTerrain = THREE.UniformsUtils.clone(terrainShader.uniforms);
+        terrainShader = THREE.ShaderTerrain["terrain"];
+        uniformsTerrain = THREE.UniformsUtils.clone(terrainShader.uniforms);
 
         // how to treat abd scale the normal texture
         uniformsTerrain["tNormal"].texture = detailTexture;
@@ -184,7 +198,7 @@
         uniformsTerrain["uRepeatOverlay"].value.set(6, 6);
 
         // configure the material that reflects our terrain
-        var material = new THREE.ShaderMaterial({
+        material = new THREE.ShaderMaterial({
             uniforms: uniformsTerrain,
             vertexShader: terrainShader.vertexShader,
             fragmentShader: terrainShader.fragmentShader,
@@ -193,7 +207,7 @@
         });
 
         // we use a plain to render as terrain
-        var geometryTerrain = new THREE.PlaneGeometry(1024, 1024, 512, 512);
+        geometryTerrain = new THREE.PlaneGeometry(1024, 1024, 512, 512);
         geometryTerrain.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI / 2));
         geometryTerrain.computeFaceNormals();
         geometryTerrain.computeVertexNormals();

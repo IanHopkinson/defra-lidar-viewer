@@ -51,7 +51,6 @@ right-mouse-button (or D) pans the view, middle-mouse-button (or S) zooms the vi
 * Autodownload of data
 * Remove hardcoded assumption about tile size/resolution
 
-
 ## Data
 
 Terrain data is an estimation of underlying terrain, surface data is the actual
