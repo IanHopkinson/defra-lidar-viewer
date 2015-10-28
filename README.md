@@ -4,9 +4,10 @@
 
 ## Usage
 
-`process.py {OS_grid_cell}` will display a window showing the data from a LIDAR map tile.
-`OS_grid_cell` is, for example, `SJ46` for Chester. The data is assumed to be in a directory name of the
-form:
+`process.py {OS_grid_cell} {friendly_name}` will display a window showing the data from a LIDAR map tile.
+`OS_grid_cell` is, for example, `SJ46` for Chester. The {friendly_name} will later be used in the display of menus and is optional. 
+
+The data is assumed to be in a directory name of the form:
 
 `LIDAR-DSM-2M-{OS_grid_cell}`
 
@@ -44,12 +45,10 @@ right-mouse-button (or D) pans the view, middle-mouse-button (or S) zooms the vi
 
 ## TODO
 
-* Check behaviour of process.py when a requested dataset does not have an entry in data_dict
-* Remove data_dict from repo - it's installation dependant
-* Add a second positional argument to process.py for a tile name
 * Fix mismatch problem with the leaflet.js visualisation
 * Autodownload of data
 * Remove hardcoded assumption about tile size/resolution
+* Select in leaflet.js and go to surface view
 
 ## Data
 

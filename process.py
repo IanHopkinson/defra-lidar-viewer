@@ -90,9 +90,15 @@ def main(argv=None):
         argv = sys.argv
     arg = argv[1:]
 
+    name = "None"
     os_grid_cell = ""
+
     if len(arg) == 1:
         os_grid_cell = arg[0]
+        DATA_DIR = DATA_DIR_TEMPLATE.format(OS_grid_cell=os_grid_cell)
+    elif len(arg) == 2:
+        os_grid_cell = arg[0]
+        name = arg[1]
         DATA_DIR = DATA_DIR_TEMPLATE.format(OS_grid_cell=os_grid_cell)
     else: 
         list_available_data()
@@ -111,10 +117,18 @@ def main(argv=None):
     print("Bounding box: {}".format(bb))
 
     # Write bounding box to data_dict
-    with open('data_dict.json') as data_file:    
-        data_dict = json.load(data_file)
+    try:
+        with open('data_dict.json') as data_file:    
+            data_dict = json.load(data_file)
+    except:
+        data_dict = {}
 
-    data_dict[os_grid_cell]["bb"] = bb
+    if os_grid_cell in data_dict.keys(): 
+        data_dict[os_grid_cell]["bb"] = bb
+        data_dict[os_grid_cell]["name"] = name
+    else:
+        data_dict[os_grid_cell] = {"bb": bb, "name": name}
+
     with open('data_dict.json', 'w') as outfile:
         json.dump(data_dict, outfile, sort_keys=True, indent=4)
 
