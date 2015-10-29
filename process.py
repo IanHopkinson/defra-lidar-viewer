@@ -92,22 +92,7 @@ def main(argv=None):
         argv = sys.argv
     arg = argv[1:]
 
-    name = "None"
-    os_grid_cell = ""
-
-    if len(arg) == 1:
-        os_grid_cell = arg[0]
-        DATA_DIR = DATA_DIR_TEMPLATE.format(OS_grid_cell=os_grid_cell)
-    elif len(arg) == 2:
-        os_grid_cell = arg[0]
-        name = arg[1]
-        DATA_DIR = DATA_DIR_TEMPLATE.format(OS_grid_cell=os_grid_cell)
-    else: 
-        DATA_DIR = DATA_ROOT_DIR + "LIDAR-DSM-25CM-SO84"
-        os_grid_cell = "SO84"
-        print("Exceptional data: {}".format(DATA_DIR))
-        #list_available_data()
-        #return
+    DATA_DIR, os_grid_cell, name = process_arguments(arg)
 
     # Report on datafiles
     datafiles = listdir(DATA_DIR)
@@ -163,6 +148,26 @@ def main(argv=None):
     # Export the data to an image
     filename = "images/" + os_grid_cell
     matplotlib.image.imsave(filename, bigdata, cmap=plt.gray())
+
+def process_arguments(arg):
+    DATA_DIR = ""
+    os_grid_cell = ''
+    name = "None"
+    if len(arg) == 1:
+        os_grid_cell = arg[0]
+        DATA_DIR = DATA_DIR_TEMPLATE.format(OS_grid_cell=os_grid_cell)
+    elif len(arg) == 2:
+        os_grid_cell = arg[0]
+        name = arg[1]
+        DATA_DIR = DATA_DIR_TEMPLATE.format(OS_grid_cell=os_grid_cell)
+    else: 
+        DATA_DIR = DATA_ROOT_DIR + "LIDAR-DSM-25CM-SO84"
+        os_grid_cell = "SO84"
+        print("Exceptional data: {}".format(DATA_DIR))
+        #list_available_data()
+        #return
+
+    return DATA_DIR, os_grid_cell, name
 
 def list_available_data():
     print("Lookin' for data!")
