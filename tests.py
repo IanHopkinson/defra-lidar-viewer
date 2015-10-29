@@ -20,6 +20,9 @@ DATA_DICT = {
 
 def test_tile_org():
     for tile_code in DATA_DICT.keys():
+        yield tile_origin_calc, tile_code
+
+def tile_origin_calc(tile_code):
         expected_xorg = DATA_DICT[tile_code]["xorg"]
         expected_yorg = DATA_DICT[tile_code]["yorg"]
         print("{}: expected xorg: {}, expected_yorg {}".format(tile_code, expected_xorg, expected_yorg))

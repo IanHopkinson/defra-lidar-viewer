@@ -45,7 +45,6 @@ right-mouse-button (or D) pans the view, middle-mouse-button (or S) zooms the vi
 
 ## TODO
 
-* Use yield for tile_org testing
 * Write tests for offsets
 * For 25cm and 50cm resolution data don't render a whole 10kmx10km tile - render individual tiles or make a tight bounding box?
 * Trying to process 50cm dataset we get a memory low error, and then a MemoryError on trying to imshow, 20000x20000 pixel png successfully created though
