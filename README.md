@@ -45,10 +45,17 @@ right-mouse-button (or D) pans the view, middle-mouse-button (or S) zooms the vi
 
 ## TODO
 
-* For 25cm and 50cm resolution data don't render a whole 10kmx10km tile
+* Use yield for tile_org testing
+* Write tests for offsets
+* For 25cm and 50cm resolution data don't render a whole 10kmx10km tile - render individual tiles or make a tight bounding box?
 * Trying to process 50cm dataset we get a memory low error, and then a MemoryError on trying to imshow, 20000x20000 pixel png successfully created though
 * Trying to process a 25cm dataset we get off-by-one errors in yoffset (and the image is too large for imshow)
-* Fix mismatch problem with the leaflet.js visualisation
+* Fix mismatch problem with the leaflet.js visualisation, could this be the problem:
+
+https://help.openstreetmap.org/questions/2056/using-the-ordnance-survey-national-grid-with-openstreetmap
+
+Or it might be that OS uses transverse Mercator and OSM uses spherical Mercator projection
+
 * Autodownload of data
 * Select in leaflet.js and go to surface view, this looks handy:
 

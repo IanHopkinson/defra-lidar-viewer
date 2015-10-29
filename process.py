@@ -88,6 +88,8 @@ OS_GRID_SIZE = 10000.0
 def main(argv=None):
     global DATA_DIR
     # Process commandline arguments
+    # If we were just going to process one tile then here would be the place to start
+    # Return a file list from process_arguments, adjust OS_GRID_SIZE, return os_grid_cell
     DATA_DIR, os_grid_cell, name = process_arguments(argv)
 
     # Report on datafiles
@@ -103,20 +105,7 @@ def main(argv=None):
     print("Bounding box: {}".format(bb))
 
     # Write bounding box to data_dict
-    try:
-        with open('data_dict.json') as data_file:    
-            data_dict = json.load(data_file)
-    except:
-        data_dict = {}
-
-    if os_grid_cell in data_dict.keys(): 
-        data_dict[os_grid_cell]["bb"] = bb
-        data_dict[os_grid_cell]["name"] = name
-    else:
-        data_dict[os_grid_cell] = {"bb": bb, "name": name}
-
-    with open('data_dict.json', 'w') as outfile:
-        json.dump(data_dict, outfile, sort_keys=True, indent=4)
+    write_to_data_dict(os_grid_cell, bb, name)
 
     # Iterate over datafiles
     filelist = [x for x in range(len(datafiles))]
@@ -144,6 +133,22 @@ def main(argv=None):
     # Export the data to an image
     filename = "images/" + os_grid_cell
     matplotlib.image.imsave(filename, bigdata, cmap=plt.gray())
+
+def write_to_data_dict(os_grid_cell, bb, name):
+    try:
+        with open('data_dict.json') as data_file:    
+            data_dict = json.load(data_file)
+    except:
+        data_dict = {}
+
+    if os_grid_cell in data_dict.keys(): 
+        data_dict[os_grid_cell]["bb"] = bb
+        data_dict[os_grid_cell]["name"] = name
+    else:
+        data_dict[os_grid_cell] = {"bb": bb, "name": name}
+
+    with open('data_dict.json', 'w') as outfile:
+        json.dump(data_dict, outfile, sort_keys=True, indent=4)
 
 def process_arguments(argv):
     if argv is None:
