@@ -45,6 +45,8 @@ right-mouse-button (or D) pans the view, middle-mouse-button (or S) zooms the vi
 
 ## TODO
 
+* For 25cm and 50cm resolution data don't render a whole 10kmx10km tile
+* Trying to process 50cm dataset we get a memory low error, and then a MemoryError on trying to imshow, 20000x20000 pixel png successfully created though
 * Trying to process a 25cm dataset we get off-by-one errors in yoffset (and the image is too large for imshow)
 * Fix mismatch problem with the leaflet.js visualisation
 * Autodownload of data
