@@ -47,7 +47,6 @@ right-mouse-button (or D) pans the view, middle-mouse-button (or S) zooms the vi
 
 ## TODO
 
-* Write tests for offsets
 * For 25cm and 50cm resolution data don't render a whole 10kmx10km tile - render individual tiles or make a tight bounding box?
 * Trying to process 50cm dataset we get a memory low error, and then a MemoryError on trying to imshow, 20000x20000 pixel png successfully created though
 * Trying to process a 25cm dataset we get off-by-one errors in yoffset (and the image is too large for imshow)
@@ -59,6 +58,8 @@ Or it might be that OS uses transverse Mercator and OSM uses spherical Mercator 
 
 * Autodownload of data
 * Select in leaflet.js and go to surface view, this looks handy:
+* Processing spinner for surface.html initial start
+* Beautification with Bootstrap
 
 https://github.com/heyman/leaflet-areaselect/
 
