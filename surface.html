@@ -65,6 +65,8 @@
     var LIDARfile = '';
     var n = 0;
 
+    var IsInitialised = false;
+
     $.ajax({ url: 'images', success: function(data) { 
         var elements = $(data);
         var found = $('li', elements);
@@ -82,25 +84,30 @@
 
     $('#LIDAR-image').change(function() {
         var val = $("#LIDAR-image option:selected").val();
-        scene = {};
-        renderer = {};
-        camera = {};
-        controls = {};
-        texture = {};
-        detailTexture = {};
-        terrainShader = {};
-        uniformsTerrain = {};
-        material = {};
-        geometryTerrain = {};
 
         LIDARfile = '';
-        n = 0;
-
-        LIDARfile = "images/" + val
-        initMap();
-        animate();
+        
+        if (!IsInitialised) {
+            n = 0;
+            LIDARfile = "images/" + val
+            initMap();
+            animate();
+            IsInitialised = true
+        } else {
+            terrain.visible = false;
+            LIDARfile = "images/" + val
+            texture = THREE.ImageUtils.loadTexture(LIDARfile, null, reloaded);
+        }
     });
 
+
+    // If we 
+    function reloaded(){
+        uniformsTerrain["tDisplacement"].texture = texture;
+        terrain.visible = true;
+        render();
+        animate();
+    }
 
     // Wait until everything is loaded before continuing
     function loaded() {
