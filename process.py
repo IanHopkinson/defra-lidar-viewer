@@ -15,9 +15,8 @@
 
 from collections import OrderedDict
 import json
-from os import listdir
-import os.path
 import sys
+import zipfile
 
 import numpy as np
 
@@ -80,21 +79,22 @@ SECONDARY = {
 }
 
 DATA_ROOT_DIR = "C:\\BigData\\defra-lidar\\"
-DATA_DIR_TEMPLATE = DATA_ROOT_DIR + "LIDAR-DSM-2M-{OS_grid_cell}"
-DATA_DIR = ""
+DATA_DIR_TEMPLATE = DATA_ROOT_DIR + "LIDAR-DSM-2M-{OS_grid_cell}.zip"
+DATA_FILE = ""
 
 OS_GRID_SIZE = 10000.0
 
 def main(argv=None):
-    global DATA_DIR
+    global DATA_FILE
     # Process commandline arguments
     # If we were just going to process one tile then here would be the place to start
     # Return a file list from process_arguments, adjust OS_GRID_SIZE, return os_grid_cell
-    DATA_DIR, os_grid_cell, name = process_arguments(argv)
+    DATA_FILE, os_grid_cell, name = process_arguments(argv)
 
     # Report on datafiles
-    datafiles = listdir(DATA_DIR)
-    print("Directory: {}".format(DATA_DIR))
+    zf = zipfile.ZipFile(DATA_FILE, 'r')
+    datafiles = zf.namelist()
+    print("Data zip file: {}".format(DATA_FILE))
     print("Found {} datafiles".format(len(datafiles)))
     xorg, yorg = tile_origin(os_grid_cell)
 
@@ -155,34 +155,26 @@ def process_arguments(argv):
         argv = sys.argv
     arg = argv[1:]
 
-    DATA_DIR = ""
+    DATA_FILE = ""
     os_grid_cell = ''
     name = "None"
 
-    # This is where we botch in hardcoded stuff, when required
-    if len(arg) == 0:
-        DATA_DIR = DATA_ROOT_DIR + "LIDAR-DSM-25CM-SO84"
-        os_grid_cell = "SO84"
-        print("Exceptional data: {}".format(DATA_DIR))
-        #list_available_data()
-        return DATA_DIR, os_grid_cell, name
-    
     os_grid_cell = arg[0]
 
     # If the first argument is short it's assumed to be of the form SJ46
     # And that we are asking for a directory like LIDAR-DSM-2M-{OS_grid_cell}
     # Otherwise we assume we are being given the full directory name
     if len(arg[0]) == 4:
-        DATA_DIR = DATA_DIR_TEMPLATE.format(OS_grid_cell=os_grid_cell)
+        DATA_FILE = DATA_DIR_TEMPLATE.format(OS_grid_cell=os_grid_cell)
     else:
-        DATA_DIR = DATA_ROOT_DIR + arg[0]
+        DATA_FILE = DATA_ROOT_DIR + arg[0]
         os_grid_cell = arg[0][-4:]
 
     # If there is a second argument then it is a friendly name
     if len(arg) == 2:
         name = arg[1]
     
-    return DATA_DIR, os_grid_cell, name
+    return DATA_FILE, os_grid_cell, name
 
 def list_available_data():
     print("Lookin' for data!")
@@ -205,10 +197,12 @@ def plot_image(data):
 
 def get_image(filename, ncols, nrows):
     data = np.zeros((ncols, nrows), dtype=np.float)
-    with open(os.path.join(DATA_DIR, filename)) as f:
+    zf = zipfile.ZipFile(DATA_FILE)
+    with zf.open(filename) as f:
         content = f.readlines()
         idx = 0
         for line in content:
+            line = line.decode("utf-8")
             parts = line.split()
             if len(parts) == ncols:
                 data[idx,] = [float(x) for x in parts]
@@ -217,10 +211,12 @@ def get_image(filename, ncols, nrows):
 
 def get_header_info(filename):
     log_line = LOGLINE_TEMPLATE.copy()
-    with open(os.path.join(DATA_DIR, filename)) as f:
+    zf = zipfile.ZipFile(DATA_FILE)
+    with zf.open(filename) as f:
         content = [next(f) for x in range(7)]
         log_line["name"] = filename
         for line in content:
+            line = line.decode("utf-8") 
             parts = line.split()
             #assert len(parts) in [1,2]
             if len(parts) != 2:
