@@ -2,6 +2,8 @@
 
 ![St Paul's cathedral LIDAR](figures/StPauls-3D.png?raw=true)
 
+A blog post describing this work: http://www.ianhopkinson.org.uk/2015/10/analysing-lidar-data-for-the-uk/
+
 ## Usage
 
 `process.py {OS_grid_cell} {friendly_name}` will display a window showing the data from a LIDAR map tile.
