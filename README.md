@@ -9,25 +9,22 @@ A blog post describing this work: http://www.ianhopkinson.org.uk/2015/10/analysi
 `process.py {OS_grid_cell} {friendly_name}` will display a window showing the data from a LIDAR map tile.
 `OS_grid_cell` is, for example, `SJ46` for Chester. The {friendly_name} will later be used in the display of menus and is optional. 
 
-The data is assumed to be in a directory name of the form:
+The data is assumed to be in a zip file with name of the form:
 
-`LIDAR-DSM-2M-{OS_grid_cell}`
+`LIDAR-DSM-2M-{OS_grid_cell}.zip`
 
 These data must be downloaded manually from:
 
 http://environment.data.gov.uk/ds/survey#/download
 
-And then unzipped to a directory. So far I've successfully used the 2m resolution
-Terrain and Surface files.
-
-Once downloaded and unzipped, change `DATA_DIR` to the appropriate location.
+So far I've successfully used the 2m resolution Terrain and Surface files.
 
 Run `./process.py`, and after a shortish pause (<1 minute) you should see a greyscale
 image of your map tile with height encoded as shade (black = lowest, white = highest). This
 image is written at full resolution to the `images/` directory with the name `{OS_grid_cell}.png`.
 
 Nominally there are 100 subtiles to a set but some are missing and appear as black squares,
-some locations have NODATA, these appear white in the image.
+some locations have NODATA, these also appear black in the image.
 
 This assumes you have `numpy` and `matplotlib` libraries installed.
 
@@ -47,7 +44,6 @@ right-mouse-button (or D) pans the view, middle-mouse-button (or S) zooms the vi
 
 ## TODO
 
-* Write tests for offsets
 * For 25cm and 50cm resolution data don't render a whole 10kmx10km tile - render individual tiles or make a tight bounding box?
 * Trying to process 50cm dataset we get a memory low error, and then a MemoryError on trying to imshow, 20000x20000 pixel png successfully created though
 * Trying to process a 25cm dataset we get off-by-one errors in yoffset (and the image is too large for imshow)
@@ -61,6 +57,9 @@ Or it might be that OS uses transverse Mercator and OSM uses spherical Mercator 
 * Select in leaflet.js and go to surface view, this looks handy:
 
 https://github.com/heyman/leaflet-areaselect/
+
+* Processing spinner for surface.html initial start
+* Beautification with Bootstrap
 
 ## Data
 
