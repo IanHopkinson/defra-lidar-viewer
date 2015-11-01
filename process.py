@@ -17,6 +17,7 @@ from collections import OrderedDict
 import json
 import sys
 import zipfile
+import os
 
 import numpy as np
 
@@ -79,7 +80,9 @@ SECONDARY = {
 }
 
 DATA_ROOT_DIR = "C:\\BigData\\defra-lidar\\"
-DATA_DIR_TEMPLATE = DATA_ROOT_DIR + "LIDAR-DSM-2M-{OS_grid_cell}.zip"
+if not os.path.exists(DATA_ROOT_DIR):
+    DATA_ROOT_DIR = os.getcwd()
+DATA_DIR_TEMPLATE = os.path.join(DATA_ROOT_DIR, "LIDAR-DSM-2M-{OS_grid_cell}.zip")
 DATA_FILE = ""
 
 OS_GRID_SIZE = 10000.0
