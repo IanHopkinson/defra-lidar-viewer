@@ -23,7 +23,7 @@ import numpy as np
 
 from matplotlib import pyplot as plt
 
-from coordinate_converter import OSGB36toWGS84
+from bng_to_latlon import OSGB36toWGS84
 import matplotlib
 
 

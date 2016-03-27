@@ -1,0 +1,3 @@
+numpy
+matplotlib
+bng-latlon  # coordinate conversion https://pypi.python.org/pypi/bng-latlon
