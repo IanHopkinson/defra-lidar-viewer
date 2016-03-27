@@ -26,7 +26,9 @@ image is written at full resolution to the `images/` directory with the name `{O
 Nominally there are 100 subtiles to a set but some are missing and appear as black squares,
 some locations have NODATA, these also appear black in the image.
 
-This assumes you have `numpy` and `matplotlib` libraries installed.
+This assumes you have required libraries installed:
+
+`pip install -r requirements.txt`
 
 There are minimal tests which can be run by doing `nosetests`, assuming you have `nosetests` installed
 
